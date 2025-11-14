@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 ]
+ALLOWED_HOSTS = ["*"]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
