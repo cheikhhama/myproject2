@@ -18,9 +18,7 @@ env = environ.Env()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 environ.Env.read_env(BASE_DIR / ".env")
-from dotenv import load_dotenv
 
-load_dotenv()
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
@@ -30,10 +28,10 @@ load_dotenv()
 #new_key = secrets.token_urlsafe(50)
 
 SECRET_KEY = env("SECRET_KEY")
-ENVIRONMENT = env('ENVIRONMENT';'developement')
+ENVIRONMENT = env("ENVIRONMENT", default="dvelopement")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env("DEBUG", 'True').lower() == 'true'
+DEBUG = env("DEBUG", default='True').lower() == 'true'
 
 
 ALLOWED_HOSTS = ["*"]
@@ -90,7 +88,7 @@ WSGI_APPLICATION = 'test2.wsgi.application'
 
 
 
-if ENVIRONMENT == 'Production': 
+if ENVIRONMENT.lower == 'Production': 
     DATABASES = {
         'default':dj_database_url.config(
             default=env('DATABASE_URL'),
