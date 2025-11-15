@@ -30,10 +30,10 @@ load_dotenv()
 #new_key = secrets.token_urlsafe(50)
 
 SECRET_KEY = env("SECRET_KEY")
-ENVIRONMENT = env('ENVIRONMENT')
+ENVIRONMENT = env('ENVIRONMENT';'developement')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env("DEBUG", 'False').lower() == 'true'
+DEBUG = env("DEBUG", 'True').lower() == 'true'
 
 
 ALLOWED_HOSTS = ["*"]
@@ -92,7 +92,9 @@ WSGI_APPLICATION = 'test2.wsgi.application'
 
 if ENVIRONMENT == 'Production': 
     DATABASES = {
-        'default':dj_database_url.parse(env('DATABASE_URL'))
+        'default':dj_database_url.config(
+            default=env('DATABASE_URL'),
+        )
     }
 else:
     DATABASES = {
