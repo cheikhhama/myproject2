@@ -12,9 +12,12 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
-
+import dj_database_url
+import environ
+env = environ.Env()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+environ.Env.read_env(BASE_DIR / ".env")
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -23,10 +26,11 @@ load_dotenv()
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-import secrets
-new_key = secrets.token_urlsafe(50)
+#import secrets
+#new_key = secrets.token_urlsafe(50)
 
-SECRET_KEY = os.environ.get("SECRET_KEY")
+SECRET_KEY = env("SECRET_KEY")
+ENVIRONMENT = env('ENVIRONMENT')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -37,7 +41,6 @@ ALLOWED_HOSTS = ["*"]
 # Application definition
 
 INSTALLED_APPS = [
-    'notes',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -77,29 +80,23 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'test2.wsgi.application'
-DB_LIVE = os.environ.get("DB_LIVE")
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-if DB_LIVE in ["False" , False]:
+
+
+if ENVIRONMENT == 'Production': 
+    DATABASES = {
+        'default':dj_database_url.parse(env('DATABASES_URL'))
+    }
+else:
     DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': os.environ.get("DB_NAME"),
-            'USER':os.environ.get("DB_USER"),
-            'PASSWORD':os.environ.get("DB_PASSWORD"),
-            'HOST': os.environ.get("DB_HOST"),
-            'PORT': os.environ.get("DB_PORT"),
-        }
-    }
 
 
 # Password validation
