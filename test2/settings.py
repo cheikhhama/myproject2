@@ -33,10 +33,13 @@ SECRET_KEY = env("SECRET_KEY")
 ENVIRONMENT = env('ENVIRONMENT')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env("DEBUG", 'False').lower() == 'true'
+
 
 ALLOWED_HOSTS = ["*"]
+CSRF_TRUSTED_ORIGINS = [
 
+]
 
 # Application definition
 
@@ -89,7 +92,7 @@ WSGI_APPLICATION = 'test2.wsgi.application'
 
 if ENVIRONMENT == 'Production': 
     DATABASES = {
-        'default':dj_database_url.parse(env('DATABASES_URL'))
+        'default':dj_database_url.parse(env('DATABASE_URL'))
     }
 else:
     DATABASES = {
