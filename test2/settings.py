@@ -36,9 +36,8 @@ ENVIRONMENT = os.environ.get("ENVIRONMENT", default="dvelopement")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get("DEBUG", default='') != 'False'
 
-
-ALLOWED_HOSTS = ["*"]
-
+ALLOWED_HOSTS = ['myproject2-production-5d5f.up.railway.app', '127.0.0.1']
+CSRF_TRUSTED_ORIGINS = ['https://myproject2-production-5d5f.up.railway.app']
 
 # Application definition
 
