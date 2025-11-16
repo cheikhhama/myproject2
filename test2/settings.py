@@ -34,7 +34,7 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 ENVIRONMENT = os.environ.get("ENVIRONMENT", default="dvelopement")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get("DEBUG", default='') != 'False'
+DEBUG = os.environ.get('DEBUG','False') == 'True'
 
 ALLOWED_HOSTS = ['myproject2-production-5d5f.up.railway.app', '127.0.0.1']
 CSRF_TRUSTED_ORIGINS = ['https://myproject2-production-5d5f.up.railway.app']
@@ -87,16 +87,15 @@ WSGI_APPLICATION = 'test2.wsgi.application'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 
-
-DATABASES = {
+if os.environ.get('ENVIRONMENT') == 'developement' or DEBUG:
+   DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
-
-DATABASES = {
+else:
+  DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
         "NAME": os.environ.get("DB_NAME"),
