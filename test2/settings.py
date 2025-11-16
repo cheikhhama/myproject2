@@ -95,8 +95,8 @@ DATABASES = {
     }
 }
 
-if 'DATABASE_URL' in os.environ:
-   DATABASES = {
+
+DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
         "NAME": os.environ.get("DB_NAME"),
