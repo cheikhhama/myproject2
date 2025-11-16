@@ -13,11 +13,14 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 from pathlib import Path
 import os
 import dj_database_url
-import environ
-env = environ.Env()
+from dotenv import load_dotenv
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-environ.Env.read_env(BASE_DIR / ".env")
+env = os.path.join(BASE_DIR,'.env')
+load_dotenv(env)
+
 
 
 # Quick-start development settings - unsuitable for production
@@ -27,17 +30,15 @@ environ.Env.read_env(BASE_DIR / ".env")
 #import secrets
 #new_key = secrets.token_urlsafe(50)
 
-SECRET_KEY = env("SECRET_KEY")
-ENVIRONMENT = env("ENVIRONMENT", default="dvelopement")
+SECRET_KEY = os.environ.get("SECRET_KEY")
+ENVIRONMENT = os.environ.get("ENVIRONMENT", default="dvelopement")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env("DEBUG", default='True').lower() == 'true'
+DEBUG = os.environ.get("DEBUG", default='') != 'False'
 
 
 ALLOWED_HOSTS = ["*"]
-CSRF_TRUSTED_ORIGINS = [
 
-]
 
 # Application definition
 
@@ -88,20 +89,22 @@ WSGI_APPLICATION = 'test2.wsgi.application'
 
 
 
-if ENVIRONMENT.lower == 'Production': 
-    DATABASES = {
-        'default':dj_database_url.config(
-            default=env('DATABASE_URL'),
-        )
-    }
-else:
-    DATABASES = {
+DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
+if 'DATABASE_URL' in os.environ:
+    DATABASES = {
+      "default": dj_database_url.config(
+        default=os.environ.get("DATABASE_URL"),
+        conn_max_age=500,
+        conn_health_checks=True,
+      )
+    }
+    
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
